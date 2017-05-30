@@ -9,7 +9,8 @@ var utils = require('./utils');
 var api = {
     accessToken : `${config.weixin.prefix}token?grant_type=client_credential`,
     upload : `${config.weixin.prefix}media/upload?`,
-    createMenu: `${config.weixin.prefix}menu/create?access_token=`
+    createMenu: `${config.weixin.prefix}menu/create?access_token=`,
+    getUserMsg: `${config.weixin.prefix}user/info?`
 }
 
 //获取access_token
@@ -39,6 +40,20 @@ wechatApi.createMenu = function(menu, access_token){
         }
       });
   });
+}
+
+//根据accessToken获取用户的基本信息
+wechatApi.getUserMsg = function(accessToken, openid){
+    var url = `${api.getUserMsg}access_token=${accessToken}&openid=${openid}&lang=zh_CN`;
+    console.log('getUserMsg url: ', url);
+    var option = {
+        url : url,
+        json : true
+    };
+    return utils.request(option).then(function(data){
+        console.log('getUserMsg data: ', data);
+        return Promise.resolve(data);
+    })
 }
 
 module.exports = wechatApi;
